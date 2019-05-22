@@ -19,8 +19,8 @@ const int xC = 650;
 const int yC = 875;
 const int cC = 10;
 
-int rCurrent = 0;
-int lCurrent = 0;
+float rCurrent = 0;
+float lCurrent = 0;
 
 // Подключение двигателей
 AccelStepper stepperRight(1, rStep, rDir);
@@ -39,7 +39,7 @@ int lots[6][3] = {
 };
 
 // Функции движения и проверки занятости
-void moveVertical(int h) {
+void moveVertical(float h) {
   rCurrent += h * yC;
   lCurrent += h * yC;
   long cor[2] = { rCurrent, lCurrent };
@@ -48,7 +48,7 @@ void moveVertical(int h) {
   delay(500);
 }
 
-void moveHorizontal(int c) {
+void moveHorizontal(float c) {
   rCurrent += c * xC;
   lCurrent -= c * xC;
   long cor[2] = { rCurrent, lCurrent };
@@ -90,49 +90,61 @@ int firstFree() {
 void placeCar(int lot) {
   int x = lots[lot][1], y = lots[lot][2];
   lots[lot][0] = 0;
+  moveHorizontal(0.5*x);
   moveVertical(y);
   moveCor(-1);
-  moveHorizontal(x);
+  moveHorizontal(0.5*x);
   moveCor(1);
-  useAct(1);
+//  useAct(1);
   moveCor(-1);
-  moveHorizontal(-x);
+  moveHorizontal(-0.5*x);
+  moveCor(1);
   moveVertical(-y);
+  moveHorizontal(-0.5*x);
 
   delay(5000);
 
+  moveHorizontal(0.5*x);
   moveVertical(y);
   moveCor(-1);
-  moveHorizontal(x);
+  moveHorizontal(0.5*x);
   moveCor(1);
-  useAct(-1);
+//  useAct(-1);
   moveCor(-1);
-  moveHorizontal(-x);
+  moveHorizontal(-0.5*x);
+  moveCor(1);
   moveVertical(-y);
+  moveHorizontal(-0.5*x);
 }
 
 void takeCar(int lot) {
   int x = lots[lot][1], y = lots[lot][2];
   lots[lot][0] = 1;
+  moveHorizontal(0.5*x);
   moveVertical(y);
   moveCor(-1);
-  moveHorizontal(x);
+  moveHorizontal(0.5*x);
   moveCor(1);
-  useAct(-1);
+//  useAct(-1);
   moveCor(-1);
-  moveHorizontal(-x);
+  moveHorizontal(-0.5*x);
+  moveCor(1);
   moveVertical(-y);
+  moveHorizontal(-0.5*x);
 
   delay(5000);
-  
+
+  moveHorizontal(0.5*x);
   moveVertical(y);
   moveCor(-1);
-  moveHorizontal(x);
+  moveHorizontal(0.5*x);
   moveCor(1);
-  useAct(11);
+//  useAct(1);
   moveCor(-1);
-  moveHorizontal(-x);
+  moveHorizontal(-0.5*x);
+  moveCor(1);
   moveVertical(-y);
+  moveHorizontal(-0.5*x);
 }
 
 // Подключение пинов
