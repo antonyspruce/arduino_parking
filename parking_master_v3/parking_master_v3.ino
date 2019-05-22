@@ -41,7 +41,7 @@ int lots[6][3] = {
 // Функции движения и проверки занятости
 void moveVertical(int h) {
   rCurrent += h * yC;
-  lCurrent -= h * yC;
+  lCurrent += h * yC;
   long cor[2] = { rCurrent, lCurrent };
   vertS.moveTo(cor);
   vertS.runSpeedToPosition();
@@ -50,7 +50,7 @@ void moveVertical(int h) {
 
 void moveHorizontal(int c) {
   rCurrent += c * xC;
-  lCurrent += c * xC;
+  lCurrent -= c * xC;
   long cor[2] = { rCurrent, lCurrent };
   vertS.moveTo(cor);
   vertS.runSpeedToPosition();
@@ -60,21 +60,21 @@ void moveHorizontal(int c) {
 void useAct(int dir) {
   stepperAct.move(dir * 7000);
   stepperAct.runToPosition();
-  delay(2000)
+  delay(2000);
 }
 
 void moveCor(int dir) {
   if (dir > 0) {
     rCurrent += cC;
-    lCurrent -= cC;
+    lCurrent += cC;
   } else {
     rCurrent -= cC;
-    lCurrent += cC;
+    lCurrent -= cC;
   }
   long cor[2] = { rCurrent, lCurrent };
   vertS.moveTo(cor);
   vertS.runSpeedToPosition();
-  delay(2000)
+  delay(2000);
 }
 
 int firstFree() {
@@ -99,6 +99,8 @@ void placeCar(int lot) {
   moveHorizontal(-x);
   moveVertical(-y);
 
+  delay(5000);
+
   moveVertical(y);
   moveCor(-1);
   moveHorizontal(x);
@@ -121,6 +123,8 @@ void takeCar(int lot) {
   moveHorizontal(-x);
   moveVertical(-y);
 
+  delay(5000);
+  
   moveVertical(y);
   moveCor(-1);
   moveHorizontal(x);

@@ -239,7 +239,7 @@ void loop() {
       vertS.runSpeedToPosition();
       delay(2000);
       cor[0] = 875;
-      cor[1] = -875;
+      cor[1] = 875;
       vertS.moveTo(cor);
       vertS.runSpeedToPosition();
       delay(2000);
