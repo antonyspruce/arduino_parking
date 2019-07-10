@@ -13,7 +13,7 @@ const int aIN4 = 11;
 
 // Определение используемых констант - количество шагов, координаты
 const int nSpeed = 50;
-const int aSpeed = 4096;
+const int aSpeed = 700;
 
 const int xC = 650;
 const int yC = 875;
@@ -25,7 +25,7 @@ float lCurrent = 0;
 // Подключение двигателей
 AccelStepper stepperRight(1, rStep, rDir);
 AccelStepper stepperLeft(1, lStep, lDir);
-AccelStepper stepperAct(8, aIN1, aIN2, aIN3, aIN4);
+AccelStepper stepperAct(8, aIN1, aIN3, aIN2, aIN4);
 MultiStepper vertS;
 
 // Массив парковочных мест с координатами и данными о заполненности
@@ -33,7 +33,7 @@ int lots[6][3] = {
   { 0, 0, 0 },
   { 0, 1, 0 },
   { 0, -1, 0 },
-  { 0, 0, 1 },
+  { 1, 0, 1 },
   { 0, 1, 1 },
   { 0, -1, 1 }
 };
@@ -58,7 +58,7 @@ void moveHorizontal(float c) {
 }
 
 void useAct(int dir) {
-  stepperAct.move(dir * 7000);
+  stepperAct.move(dir * 6500);
   stepperAct.runToPosition();
   delay(2000);
 }
@@ -79,7 +79,7 @@ void moveCor(int dir) {
 
 int firstFree() {
   for (int i = 0; i < 6; i++) {
-    if (lots[i][1] == 1) {
+    if (lots[i][0] == 1) {
       return i;
     }
     return -1;
@@ -87,18 +87,16 @@ int firstFree() {
 }
 
 // Рабочие функции алгоритмов
-void placeCar(int lot) {
+void workWithCar(int lot, int flag) {
   int x = lots[lot][1], y = lots[lot][2];
-  lots[lot][0] = 0;
+  lots[lot][0] = flag;
   moveHorizontal(0.5*x);
   moveVertical(y);
   moveCor(-1);
   moveHorizontal(0.5*x);
   moveCor(1);
-//  useAct(1);
-  moveCor(-1);
+  useAct(1);
   moveHorizontal(-0.5*x);
-  moveCor(1);
   moveVertical(-y);
   moveHorizontal(-0.5*x);
 
@@ -109,40 +107,8 @@ void placeCar(int lot) {
   moveCor(-1);
   moveHorizontal(0.5*x);
   moveCor(1);
-//  useAct(-1);
-  moveCor(-1);
+  useAct(-1);
   moveHorizontal(-0.5*x);
-  moveCor(1);
-  moveVertical(-y);
-  moveHorizontal(-0.5*x);
-}
-
-void takeCar(int lot) {
-  int x = lots[lot][1], y = lots[lot][2];
-  lots[lot][0] = 1;
-  moveHorizontal(0.5*x);
-  moveVertical(y);
-  moveCor(-1);
-  moveHorizontal(0.5*x);
-  moveCor(1);
-//  useAct(-1);
-  moveCor(-1);
-  moveHorizontal(-0.5*x);
-  moveCor(1);
-  moveVertical(-y);
-  moveHorizontal(-0.5*x);
-
-  delay(5000);
-
-  moveHorizontal(0.5*x);
-  moveVertical(y);
-  moveCor(-1);
-  moveHorizontal(0.5*x);
-  moveCor(1);
-//  useAct(1);
-  moveCor(-1);
-  moveHorizontal(-0.5*x);
-  moveCor(1);
   moveVertical(-y);
   moveHorizontal(-0.5*x);
 }
@@ -172,13 +138,13 @@ void loop() {
     if (code == 7) {
       const int lot = firstFree();
       if (lot != -1) {
-        placeCar(lot);
+        workWithCar(lot, 0);
       }
     }
     // Алгоритм "забрать машину"
     else if (code >= 1 && code <= 6) {
       if (lots[code - 1][0] == 0) {
-        takeCar(code - 1);
+        workWithCar(code - 1, 1);
       }
     }
   }

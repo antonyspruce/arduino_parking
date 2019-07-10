@@ -52,7 +52,7 @@ void moveHorizontal(int coord) {
 
 void useAct(int dir) {
   if (dir == 1) {
-    stepperAct.runToNewPosition(5000);
+    stepperAct.runToNewPosition(6500);
   } else if (dir == -1) {
     stepperAct.runToNewPosition(0);
   }
@@ -174,9 +174,9 @@ void setup() {
   stepperLeft.setSpeed(nSpeed);
   stepperLeft.setAcceleration(nSpeed * 1.5);
   stepperLeft.setMaxSpeed(nSpeed * 2);
-  stepperAct.setSpeed(6000);
-  stepperAct.setAcceleration(100);
-  stepperAct.setMaxSpeed(6000);
+  stepperAct.setSpeed(700);
+  stepperAct.setAcceleration(700);
+  stepperAct.setMaxSpeed(700);
   vertS.addStepper(stepperRight);
   vertS.addStepper(stepperLeft);
 }
